@@ -1,8 +1,12 @@
-import { safeSessionStorageGetItem, sessionNameKeys } from "@/lib/utils";
-import { FormDataPersonal } from "./steps/PersonalData";
+import { FormData } from "@/AllSteps";
+import { useFormContext } from "react-hook-form";
 
 export function PersonalReview() {
-  const personalData = safeSessionStorageGetItem<FormDataPersonal>(sessionNameKeys[0]);
+
+  const form = useFormContext<FormData>();
+
+  const personalData = form.getValues('personalDataStep');
+
   return (
     <div>
 

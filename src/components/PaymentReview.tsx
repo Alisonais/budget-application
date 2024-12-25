@@ -1,10 +1,15 @@
-import { safeSessionStorageGetItem, sessionNameKeys } from "@/lib/utils";
-import { FormDataPayment } from "./PayInput";
-import { FormDataPrice } from "./SubTotal";
+import { FormData } from "@/AllSteps";
+import { DoubleArrowRightIcon } from "@radix-ui/react-icons";
+import { useFormContext } from "react-hook-form";
 
 export function PaymentReview() {
-  const paymentData = safeSessionStorageGetItem<FormDataPayment>(sessionNameKeys[3]);
-  const priceData = safeSessionStorageGetItem<FormDataPrice>(sessionNameKeys[4]);
+
+  const form = useFormContext<FormData>();
+  const paymentData = form.getValues('paymentDataStep');
+  const priceData = form.getValues('subTotalData');
+
+  // console.log('paymentData', paymentData, 'priceData', priceData);
+
   return (
     <div>
 
@@ -22,7 +27,12 @@ export function PaymentReview() {
         {paymentData?.onTimePay && (
           <div className="flex flex-col gap-2" >
             <p className="font-bold"> Pagamento á Vista: </p>
-            <p className="pl-2"> {paymentData?.onTimePay} </p>
+            <div className="flex items-center" >
+              <div className="size-4">
+                <DoubleArrowRightIcon />
+              </div>
+              <p className="pl-2"> {paymentData?.onTimePay} </p>
+            </div>
           </div>
         )}
 
@@ -33,7 +43,12 @@ export function PaymentReview() {
         {paymentData?.creditPay && (
           <div className="flex flex-col gap-2" >
             <p className="font-bold"> Pagamento via Cartão: </p>
-            <p className="pl-2"> {paymentData?.creditPay} </p>
+            <div className="flex items-center" >
+              <div className="size-4">
+                <DoubleArrowRightIcon />
+              </div>
+              <p className="pl-2"> {paymentData?.creditPay} </p>
+            </div>
           </div>
         )}
       </div>
@@ -43,10 +58,10 @@ export function PaymentReview() {
       <div>
         <div className=" my-1 flex flex-col gap-1">
           {
-            priceData?.laborPrice && (
+            priceData?.laborPrice !== 0 && (
               <div className="flex justify-between gap-2" >
                 <p className="font-semibold"> Valor da Mão de Obra: </p>
-                <p className="font-semibold"> {priceData?.laborPrice.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} </p>
+                <p className="font-semibold"> {Number(priceData.laborPrice ? priceData.laborPrice : 0).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} </p>
               </div>
             )}
         </div>
@@ -56,14 +71,19 @@ export function PaymentReview() {
             priceData?.partPrice !== 0 && (
               <div className="flex justify-between gap-2" >
                 <p className="font-semibold"> Valor das Peças: </p>
-                <p className="font-semibold"> {priceData?.partPrice.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} </p>
+                <p className="font-semibold"> {Number(priceData?.partPrice).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} </p>
               </div>
             )}
         </div>
 
-        <div className="flex justify-between gap-2" >
-          <p className="text-lg font-bold">Valor Estimado do Reparo: </p>
-          <p className="font-bold border-t-2 border-zinc-600"> {(Number(priceData?.laborPrice) + Number(priceData?.partPrice)).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} </p>
+        <div>
+          {
+            priceData?.totalValue !== 0 && (
+              <div className="flex justify-between gap-2" >
+                <p className="text-lg font-bold">Valor Estimado do Reparo: </p>
+                <p className="font-bold border-t-2 border-zinc-600"> {Number(priceData.totalValue).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} </p>
+              </div>
+            )}
         </div>
 
       </div>

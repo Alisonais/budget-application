@@ -1,8 +1,13 @@
-import { safeSessionStorageGetItem, sessionNameKeys } from "@/lib/utils";
-import { FormDataCar } from "./steps/CarData";
+import { FormData } from "@/AllSteps";
+import { useFormContext } from "react-hook-form";
+
 
 export function CarReview() {
-  const carData = safeSessionStorageGetItem<FormDataCar>(sessionNameKeys[1]);
+
+  const form = useFormContext<FormData>();
+
+  const carData = form.getValues('carDataStep');
+
   return (
     <div>
 

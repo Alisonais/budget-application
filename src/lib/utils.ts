@@ -19,10 +19,3 @@ export function safeSessionStorageGetItem<T>(key: string): T | null {
   }
 }
 
-export const sessionNameKeys = [
-  'personal-data',
-  'car-data',
-  'Budget-data',
-  'pay-format',
-  'sub-total',
-]

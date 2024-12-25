@@ -1,10 +1,12 @@
-import { safeSessionStorageGetItem, sessionNameKeys } from "@/lib/utils";
+import { FormData } from "@/AllSteps";
 import { DoubleArrowRightIcon } from "@radix-ui/react-icons";
-import { FormDataBudget } from "./steps/BudgetData";
+import { useFormContext } from "react-hook-form";
 
 export function RepairReview() {
-  const budgetData = safeSessionStorageGetItem<FormDataBudget>(sessionNameKeys[2]);
-  console.log(budgetData?.PartCost[0])
+
+  const form = useFormContext<FormData>();
+  const budgetData = form.getValues('budgetDataStep');
+
   return (
     <div>
 
@@ -22,7 +24,7 @@ export function RepairReview() {
       <h2 className="bg-zinc-700 text-white text-center tracking-[2px] font-bold border-[1px] rounded-lg" > Descrição dos Reparos </h2>
       <div className=" my-1 flex flex-col gap-1">
         {
-          budgetData?.LaborCost.map((item, index) => (
+          budgetData?.LaborCost?.map((item, index) => (
             <div key={index} className="" >
               <div className="flex items-center gap-2">
                 <div className="size-4">
@@ -36,19 +38,19 @@ export function RepairReview() {
         }
       </div>
 
-      {budgetData?.PartCost[0] && (
+      {budgetData?.PartCost?.length > 0 && (
         <>
           <h2 className="bg-zinc-700 text-white text-center tracking-[2px] font-bold border-[1px] rounded-lg" > Peças </h2>
 
           <div className=" my-1 flex flex-col gap-1">
             {
               budgetData?.PartCost.map((item, index) => (
-                <div key={index} className="flex justify-between" >
+                <div key={index} >
                   <div className="flex items-center gap-2">
                     <div className="size-4">
                       <DoubleArrowRightIcon />
                     </div>
-                    <p> {item.carPartChange} </p>
+                    <p className="max-w-max" > {item.carPartChange} </p>
                   </div>
                   <p className="text-right font-bold"> {item.priceChange?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} </p>
                 </div>
