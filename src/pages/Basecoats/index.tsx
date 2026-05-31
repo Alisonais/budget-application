@@ -1,11 +1,20 @@
+import { BasecoatService } from "@/services/BasecoatService";
 import { AnimatePresence } from "motion/react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { listBasecoatRequestType } from "./typesOfBasecoats";
 
 export function Basecoats() {
 
-const loadBasecoats = useCallback(async()=> {
-  const data: list
-}, []);
+  const [basecoats, setBasecoats] = useState([]);
+
+  const loadBasecoats = useCallback(async () => {
+    try {
+      const data: listBasecoatRequestType = await BasecoatService.getBasecoats();
+      const getBasecoats = data.data.basecoats;
+    } catch (err) {
+
+    }
+  }, []);
 
   return (
     <AnimatePresence
