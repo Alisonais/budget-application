@@ -1,7 +1,7 @@
-import * as React from "react"
+import { cn } from "@/utils/utils"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { cn } from "@/lib/utils"
 import { Cross2Icon } from "@radix-ui/react-icons"
+import * as React from "react"
 
 const Dialog = DialogPrimitive.Root
 
@@ -70,7 +70,7 @@ const DialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      "flex flex-col sm:flex-col sm:justify-end space-y-4",
       className
     )}
     {...props}
@@ -106,14 +106,7 @@ const DialogDescription = React.forwardRef<
 DialogDescription.displayName = DialogPrimitive.Description.displayName
 
 export {
-  Dialog,
-  DialogPortal,
-  DialogOverlay,
-  DialogTrigger,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
+  Dialog, DialogClose,
+  DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger
 }
+

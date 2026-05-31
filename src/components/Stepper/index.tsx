@@ -1,12 +1,14 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { AnimatePresence, motion } from "motion/react";
 import { createContext, useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../Button";
+import { ModalDialog } from "../ModalDialog";
 import { useStepper } from "./useStepper";
 interface IStepperContextValue {
   previousStep: () => void;
   nextStep: () => void;
-  handleChangeStep: (index:number) => void;
+  handleChangeStep: (index: number) => void;
 };
 
 export const StepperContext = createContext({} as IStepperContextValue);
@@ -43,37 +45,37 @@ export function Stepper({ steps, initialStep = 0 }: IStepperProps) {
         <ul className="flex flex-wrap justify-between items-center " >
           {steps.map((step, index) => {
             const isActive = index === currentStep;
-            return(
+            return (
               <li
-              key={step.label}
-              className={cn(
-                'relative inline-block px-2 py-1 rounded-md cursor-pointer text-xs tracking-[-0.8px] transition-colors duration-500',
-                isActive && 'text-primary-foreground'
-              )}
-              onClick={() => handleChangeStep(index)}
-            >
-              {String(index + 1).padStart(2,'0')}. {step.label}
-              {isActive && <motion.div layoutId="selectedTab" className="-z-10 bg-primary rounded-md absolute inset-0" />}
-            </li>
+                key={step.label}
+                className={cn(
+                  'relative inline-block px-2 py-1 rounded-md cursor-pointer text-xs tracking-[-0.8px] transition-colors duration-500',
+                  isActive && 'text-primary-foreground'
+                )}
+                onClick={() => handleChangeStep(index)}
+              >
+                {String(index + 1).padStart(2, '0')}. {step.label}
+                {isActive && <motion.div layoutId="selectedTab" className="-z-10 bg-primary rounded-md absolute inset-0" />}
+              </li>
             )
 
           })}
         </ul>
 
         <AnimatePresence mode="wait" initial={false} >
-        <motion.div
-        key={currentStep}
-        initial={{translateX: '250px', opacity: 0}}
-        animate={{translateX: 0, opacity: 1}}
-        exit={{translateX: '-250px', opacity: 0}}
-        transition={{
-          duration: 0.3,
-          type: "spring",
-        }}
-        className="w-[380px] md:w-[500px]"
-        >
-          {steps[currentStep].content}
-        </motion.div>
+          <motion.div
+            key={currentStep}
+            initial={{ translateX: '250px', opacity: 0 }}
+            animate={{ translateX: 0, opacity: 1 }}
+            exit={{ translateX: '-250px', opacity: 0 }}
+            transition={{
+              duration: 0.3,
+              type: "spring",
+            }}
+            className="w-[380px] md:w-[500px]"
+          >
+            {steps[currentStep].content}
+          </motion.div>
         </AnimatePresence>
       </div>
 
@@ -82,9 +84,21 @@ export function Stepper({ steps, initialStep = 0 }: IStepperProps) {
 }
 
 export function StepperFoter({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
+
+  function handleHome() {
+    localStorage.removeItem('formValues');
+    window.history.replaceState({}, 'formValues');
+    navigate('/list-budgets');
+  }
   return (
-    <footer className="mt-6 flex justify-end gap-4" >
-      {children}
+    <footer className="mt-6 flex justify-between gap-4" >
+        <ModalDialog variant="default" title="Home" description="Voltar para listagem de orçamentos">
+          <Button type="button" onClick={handleHome}>Listar orçamentos</Button>
+        </ModalDialog>
+      <div className="flex justify-end gap-2">
+        {children}
+      </div>
     </footer>
   );
 }

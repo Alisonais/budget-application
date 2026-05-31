@@ -1,29 +1,28 @@
-import { FormData } from '@/AllSteps';
-import { Button } from '@/components/Button';
 import { CarReview } from '@/components/CarReview';
-import { ModalDialog } from '@/components/ModalDialog';
+import { FooterButton } from '@/components/FooterButton';
 import { PaymentReview } from '@/components/PaymentReview';
 import { PersonalReview } from '@/components/PersonalReview';
 import { RepairReview } from '@/components/RepairReview';
+import { FormData } from '@/pages/AllSteps';
 import { MapPin, WhatsappLogo } from "@phosphor-icons/react";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { clearForm, handleSendMsgPdf, sendmsgWhatsapp } from './utils';
 
 
 export function Review() {
-  let pdfWidth: number | null = null;
-  let pdfHeight: number | null = null;
+
+  const [pdfWidth, setPdfWidth] = useState<number | null>(null);
+  const [pdfHeight, setPdfHeight] = useState<number | null>(null);
 
   const form = useFormContext<FormData>();
 
   const divRef = useRef<any>(null);
 
   useEffect(() => {
-    sessionStorage.setItem('formValues', JSON.stringify(form.getValues()));
+    localStorage.setItem('formValues', JSON.stringify(form.getValues()));
 
-    pdfWidth = divRef.current?.offsetWidth;
-    pdfHeight = divRef.current?.offsetHeight;
+    setPdfWidth(divRef.current?.offsetWidth);
+    setPdfHeight(divRef.current?.offsetHeight);
 
   }, [divRef]);
 
@@ -45,26 +44,7 @@ export function Review() {
         <RepairReview />
         <PaymentReview />
 
-        <div className='flex flex-row justify-around' data-html2canvas-ignore >
-          <Button
-            type='button'
-            className="mt-8"
-            onClick={() => handleSendMsgPdf(form, pdfWidth, pdfHeight)}>
-            PDF
-          </Button>
-
-          <div className="mt-8" >
-            <ModalDialog
-              title='Limpar'
-              handle={() => clearForm(form)}
-
-            />
-          </div>
-
-          <Button type='button' className="mt-8" onClick={() => sendmsgWhatsapp(form)} >
-            WhatsApp
-          </Button>
-        </div>
+        <FooterButton form={form} pdfWidth={pdfWidth} pdfHeight={pdfHeight} />
 
       </div>
     </div>

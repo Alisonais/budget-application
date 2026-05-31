@@ -7,6 +7,7 @@
 
 
 import { BrowserRouter } from "react-router-dom";
+import { Toaster } from "./components/Toster";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Router } from "./Router";
 
@@ -15,6 +16,7 @@ export function App() {
     <AuthProvider>
       <BrowserRouter>
         <Router />
+        <Toaster />
       </BrowserRouter>
     </AuthProvider>
 

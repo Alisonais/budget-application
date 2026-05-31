@@ -3,36 +3,39 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-  DialogClose
+  DialogTrigger
 } from "@/components/dialog";
 
+interface Iprops {
+  title?: string;
+  description: string;
+  children: React.ReactNode;
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+}
 
-export function ModalDialog({ title, handle }: { title?: string, handle: () => void }) {
+export function ModalDialog({
+  title,
+  description,
+  children,
+  variant = 'default',
+}: Iprops) {
 
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">{title}</Button>
+        <Button size='sm' variant={variant}>{title}</Button>
       </DialogTrigger>
-      <DialogContent className=" w-[380px] rounded-md sm:max-w-[425px]">
+      <DialogContent className="overflow-y-auto w-[380px] rounded-md sm:max-w-[400px] max-h-[600px]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
-            Tem certeza que deseja limpar o formulário
+            {description}
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button onClick={handle} >
-              Limpar Formulario
-            </Button>
-          </DialogClose>
-        </DialogFooter>
+        {children}
       </DialogContent>
     </Dialog>
   )

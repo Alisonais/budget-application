@@ -8,11 +8,11 @@ export function AuthGuard({ isPrivite }: { isPrivite: boolean }) {
   const { signedIn } = useAuth();
 
   if (signedIn && !isPrivite) {
-    return <Navigate to='/steppers' replace />
+    return <Navigate to='/budgets' replace />
   }
 
   if (!signedIn && isPrivite) {
-    return <Navigate to='/' replace />
+    return <Navigate to='/login' replace />
   }
 
   return (
@@ -21,7 +21,7 @@ export function AuthGuard({ isPrivite }: { isPrivite: boolean }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{
-        duration: 2,
+        duration: 0.2,
       }}
     >
       <Outlet />

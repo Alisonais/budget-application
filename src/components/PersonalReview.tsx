@@ -1,11 +1,16 @@
-import { FormData } from "@/AllSteps";
+import { FormData } from "@/pages/AllSteps";
 import { useFormContext } from "react-hook-form";
+import { PersonalDataStep } from "./types/budgetTypes";
 
-export function PersonalReview() {
+type DataPersonal = {
+  data?: PersonalDataStep
+};
+
+export function PersonalReview({data}:DataPersonal) {
 
   const form = useFormContext<FormData>();
 
-  const personalData = form.getValues('personalDataStep');
+  const personalData = form ? form.getValues('personalDataStep') : data;
 
   return (
     <div>
@@ -21,7 +26,7 @@ export function PersonalReview() {
 
         <div className="flex gap-2" >
           <p className="font-bold"> Telefone: </p>
-          <a href={`https://wa.me/55${personalData?.phone}`} > {personalData?.phone} </a>
+          <a href={`https://wa.me/${personalData?.phone}`} > {personalData?.phone} </a>
         </div>
 
         {personalData?.adress && (

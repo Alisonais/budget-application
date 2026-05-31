@@ -1,11 +1,15 @@
-import { FormData } from "@/AllSteps";
+import { FormData } from "@/pages/AllSteps";
 import { DoubleArrowRightIcon } from "@radix-ui/react-icons";
 import { useFormContext } from "react-hook-form";
+import { BudgetDataStep, CarPartCost, LaborCost } from "./types/budgetTypes";
+type dataBudget = {
+  data?: BudgetDataStep
+}
 
-export function RepairReview() {
+export function RepairReview({data}: dataBudget) {
 
   const form = useFormContext<FormData>();
-  const budgetData = form.getValues('budgetDataStep');
+  const budgetData = form ? form.getValues('budgetDataStep') : data;
 
   return (
     <div>
@@ -24,7 +28,7 @@ export function RepairReview() {
       <h2 className="bg-zinc-700 text-white text-center tracking-[2px] font-bold border-[1px] rounded-lg" > Descrição dos Reparos </h2>
       <div className=" my-1 flex flex-col gap-1">
         {
-          budgetData?.LaborCost?.map((item, index) => (
+          budgetData?.LaborCost?.map((item:LaborCost, index:number) => (
             <div key={index} className="" >
               <div className="flex items-center gap-2">
                 <div className="size-4">
@@ -38,13 +42,13 @@ export function RepairReview() {
         }
       </div>
 
-      {budgetData?.PartCost?.length > 0 && (
+      {(budgetData?.PartCost?.length ?? 0) > 0 && (
         <>
-          <h2 className="bg-zinc-700 text-white text-center tracking-[2px] font-bold border-[1px] rounded-lg" > Peças </h2>
+          <h2 className="bg-zinc-700 text-white text-center tracking-[2px] font-bold border-[1px] rounded-lg" > Peças a trocar </h2>
 
           <div className=" my-1 flex flex-col gap-1">
             {
-              budgetData?.PartCost.map((item, index) => (
+              budgetData?.PartCost.map((item:CarPartCost, index:number) => (
                 <div key={index} >
                   <div className="flex items-center gap-2">
                     <div className="size-4">

@@ -1,12 +1,15 @@
-import { FormData } from "@/AllSteps";
+import { FormData } from "@/pages/AllSteps";
 import { useFormContext } from "react-hook-form";
+import { CarDataStep } from "./types/budgetTypes";
+type dataCar = {
+  data?: CarDataStep
+}
 
-
-export function CarReview() {
+export function CarReview({data}: dataCar) {
 
   const form = useFormContext<FormData>();
 
-  const carData = form.getValues('carDataStep');
+  const carData = form ? form.getValues('carDataStep') : data;
 
   return (
     <div>
