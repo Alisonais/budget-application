@@ -13,6 +13,7 @@ export function Dashboard() {
     carsTarget,
     groupByMonth,
     handleListBudgets,
+    handleListBasecoats,
     partCount,
     partTarget,
     titleLocaleString,
@@ -29,7 +30,7 @@ export function Dashboard() {
     <div className="max-w-[900px] m-[0_auto] flex justify-center items-center flex-col gap-4 p-4 pt-20">
       <h1 className="text-4xl text-center font-bold tracking-[2px]">Dashboard</h1>
       <div className="flex gap-2" >
-      <Button size={'sm'} onClick={() => console.log('tintas')}>Tintas</Button>
+      <Button size={'sm'} onClick={handleListBasecoats}>Tintas</Button>
         <Button size={'sm'} onClick={handleListBudgets}>Orçamentos</Button>
       </div>
 

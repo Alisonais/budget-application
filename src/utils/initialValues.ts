@@ -18,7 +18,7 @@ export function initialValues(initialvalue: IBudgetData) {
       model: initialvalue?.carDataStep.model ?? '',
       brand: initialvalue?.carDataStep.brand ?? '',
       plate: initialvalue?.carDataStep.plate ?? '',
-      year: initialvalue?.carDataStep.year ?? undefined,
+      year: initialvalue?.carDataStep.year ?? '',
       color: initialvalue?.carDataStep.color ?? ''
     },
     budgetDataStep: {
@@ -29,13 +29,13 @@ export function initialValues(initialvalue: IBudgetData) {
       })),
       PartCost: initialvalue?.budgetDataStep?.PartCost?.map((item: any) => ({
         carPartChange: item.carPartChange ?? '',
-        priceChange: item.priceChange ?? undefined,
+        priceChange: item.priceChange ?? '',
       })),
     },
     subTotalData: {
-      laborPrice: initialvalue?.subTotalData?.laborPrice ?? 0,
-      partPrice: initialvalue?.subTotalData?.partPrice ?? 0,
-      totalValue: initialvalue?.subTotalData?.totalValue ?? 0,
+      laborPrice: initialvalue?.subTotalData?.laborPrice ?? '',
+      partPrice: initialvalue?.subTotalData?.partPrice ?? '',
+      totalValue: initialvalue?.subTotalData?.totalValue ?? '',
     },
     paymentDataStep: {
       partpayment: initialvalue?.paymentDataStep?.partpayment ?? '',
@@ -45,7 +45,7 @@ export function initialValues(initialvalue: IBudgetData) {
           createdAt: formatDate({ dateInUnix: + item.createdAt}) ?? formatDate({ dateInUnix: new Date().getTime() }),
           budgetId: item.budgetId ?? '',
           type: item.type ?? 'CREDIT',
-          value: item.value ?? undefined,
+          value: item.value ?? '',
         })),
     }
   }

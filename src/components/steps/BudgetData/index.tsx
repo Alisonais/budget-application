@@ -4,6 +4,7 @@ import { StepHeader } from "@/components/StepHeader";
 import { StepperFoter, StepperNextButton, StepperPreviousButton } from "@/components/Stepper";
 import { useStepper } from "@/components/Stepper/useStepper";
 import { SubTotal } from "@/components/SubTotal";
+import { Textarea } from "@/components/textarea";
 import { FormData } from "@/pages/AllSteps";
 import { formatDate } from "@/utils/utils";
 import { Label } from "@radix-ui/react-label";
@@ -66,7 +67,7 @@ export function BudgetData() {
         <Label htmlFor="description" >
           Descrição dos Reparos
         </Label>
-        <Input id="description" placeholder="Digite a descrição do reparo" {...form.register('budgetDataStep.description')} />
+        <Textarea id="description" placeholder="Digite a descrição do reparo" {...form.register('budgetDataStep.description')} />
       </div>
 
 

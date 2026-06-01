@@ -21,7 +21,7 @@ export function RepairReview({data}: dataBudget) {
             <div className="size-4">
             <DoubleArrowRightIcon />
             </div>
-            <p className="pl-2" > {budgetData?.description}. </p>
+            <p className="pl-2 whitespace-pre-line" > {budgetData?.description}. </p>
           </div></>
       )}
 
