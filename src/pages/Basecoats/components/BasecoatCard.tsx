@@ -1,13 +1,17 @@
 import { Button } from "@/components/Button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/card";
 import { ModalDialog } from "@/components/ModalDialog";
+import { UseFormReturn } from "react-hook-form";
 import { Basecoat } from "../typesOfBasecoats";
+import { FormBasecoat, formBasecoatData } from "./FormBasecoat";
 
 interface IBasecoat {
-  basecoat: Basecoat
+  basecoat: Basecoat;
+  onUpdateBasecoat: (form: UseFormReturn<formBasecoatData>) => void;
+  onDeleteBasecoat: (basecoatId: string) => void;
 }
 
-export function BasecoatCard({basecoat}: IBasecoat) {
+export function BasecoatCard({ basecoat, onUpdateBasecoat, onDeleteBasecoat }: IBasecoat) {
   return (
     <Card className="w-[400px]">
       <CardHeader>
@@ -24,13 +28,13 @@ export function BasecoatCard({basecoat}: IBasecoat) {
       </CardHeader>
       <CardFooter className="flex justify-between">
         <ModalDialog variant="destructive" title="Deletar" description="Tem certeza que deseja deletar este orçamento">
-          <Button onClick={() => console.log('deletar')} variant={'destructive'}>deletar</Button>
+          <Button onClick={() => onDeleteBasecoat(basecoat.id!!)} variant={'destructive'}>deletar</Button>
         </ModalDialog>
         <ModalDialog
           title="Editar"
           description={'edição da tinta'}
         >
-          editar
+          <FormBasecoat basecoat={{basecoat:{ ...basecoat}}} onUpdateBasecoat={onUpdateBasecoat} />
         </ModalDialog>
       </CardFooter>
     </Card>

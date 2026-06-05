@@ -1,5 +1,5 @@
 import { FormData } from "@/pages/AllSteps";
-import { formatName } from "@/utils/formatName";
+import { formatPlate } from "@/utils/formatName";
 import { Label } from "@radix-ui/react-label";
 import { useFormContext } from "react-hook-form";
 import { Input } from "./Input";
@@ -20,7 +20,7 @@ export function CarDataInput({
 
   return (
     <>
-      {label === 'Ano' ? (
+      {label === 'Ano' && (
         <div className="space-y-2" >
           <Label htmlFor="year" >
             Ano
@@ -36,14 +36,35 @@ export function CarDataInput({
           )}
         </div>
       )
-        : (
+      }
+
+      {(label !== 'Ano' && label !== 'Placa') && (
+        <div className="space-y-2" >
+          <Label htmlFor="year" >
+            Ano
+          </Label>
+          <Input id="year" type="number" {...form.register('carDataStep.year',
+            { setValueAs: value => value > 0 ? Number(value) : null }
+          )}
+          />
+          {form.formState.errors.carDataStep?.year?.message && (
+            <small className="text-destructive" >
+              {form.formState.errors.carDataStep.year.message}
+            </small>
+          )}
+        </div>
+      )
+      }
+
+      {
+        label === 'Placa' && (
           <div className="space-y-2" >
             <Label htmlFor={id} >
               {label}
             </Label>
             <Input id={id} {...form.register(`carDataStep.${id}`, {
               onChange: ((value => (
-                value.target.value = formatName(value.target.value)
+                value.target.value = formatPlate(value.target.value)
               )))
             })} />
             {form.formState.errors.carDataStep?.[id]?.message && (
@@ -52,7 +73,8 @@ export function CarDataInput({
               </small>
             )}
           </div>
-        )}
+        )
+      }
 
     </>
   )

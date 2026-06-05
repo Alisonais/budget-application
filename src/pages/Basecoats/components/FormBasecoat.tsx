@@ -2,14 +2,15 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { basecoatInitialValues, objBasecoat } from "../typesOfBasecoats";
 
 interface IFormBasecoat {
   basecoat?: objBasecoat,
-  onCreateBasecoat?: () => void,
-  onUpdateBasecoat?: () => void,
+  onCreateBasecoat?: (form: UseFormReturn<formBasecoatData>) => void,
+  onUpdateBasecoat?: (form: UseFormReturn<formBasecoatData>) => void,
 }
 
 const schema = z.object({
@@ -27,7 +28,7 @@ export function FormBasecoat({ basecoat, onCreateBasecoat, onUpdateBasecoat }: I
 
   const basecoatForm = useForm<formBasecoatData>({
     resolver: zodResolver(schema),
-    defaultValues: basecoatInitialValues(basecoat as any)
+    defaultValues: basecoatInitialValues(basecoat ? basecoat : {})
   })
 
   return (
@@ -101,13 +102,17 @@ export function FormBasecoat({ basecoat, onCreateBasecoat, onUpdateBasecoat }: I
 
         <div className="flex justify-end">
           {onCreateBasecoat && (
-              <Button onClick={onCreateBasecoat}>Adicionar</Button>
-            )}
+            <DialogClose>
+              <Button onClick={() => onCreateBasecoat(basecoatForm)}>Adicionar</Button>
+            </DialogClose>
+          )}
           {onUpdateBasecoat && (
-              <Button onClick={onUpdateBasecoat}>Atualizar</Button>
-            )}
+            <DialogClose>
+              <Button onClick={() => onUpdateBasecoat(basecoatForm)}>Atualizar</Button>
+            </DialogClose>
+          )}
         </div>
       </div>
-    </FormProvider>
+    </FormProvider >
   )
 };

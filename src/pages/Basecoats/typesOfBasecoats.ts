@@ -5,25 +5,25 @@ export type listBasecoatRequestType = {
 }
 
 export type Basecoat = {
-  id: string;
+  id?: string;
   colorGroup: string;
   colorName: string;
   oem: string;
   quantity: number;
-  colorCode: string;
+  colorCode?: string;
 }
 
 export type objBasecoat = {
   basecoat?: Basecoat
 }
 
-export function basecoatInitialValues(initialvalue: Basecoat): Basecoat {
+export function basecoatInitialValues({ basecoat }: objBasecoat ): Basecoat {
   return {
-    id: initialvalue?.id ?? '',
-    colorGroup: initialvalue?.colorGroup ?? '',
-    colorName: initialvalue?.colorName ?? '',
-    oem: initialvalue?.oem ?? '',
-    quantity: initialvalue?.quantity ?? '',
-    colorCode: initialvalue?.colorCode ?? '',
+    id: basecoat?.id ?? '',
+    colorGroup: basecoat?.colorGroup ?? '',
+    colorName: basecoat?.colorName ?? '',
+    oem: basecoat?.oem ?? '',
+    quantity: basecoat?.quantity ?? 0,
+    colorCode: basecoat?.colorCode ?? '',
   }
 }
