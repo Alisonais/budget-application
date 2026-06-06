@@ -1,6 +1,8 @@
 import { Button } from "@/components/Button";
+import { Input } from "@/components/Input";
 import { ModalDialog } from "@/components/ModalDialog";
 import { SpinnerLoading } from "@/components/Spinner";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
 import { BasecoatCard } from "./components/BasecoatCard";
 import { FormBasecoat } from "./components/FormBasecoat";
@@ -10,9 +12,13 @@ export function Basecoats() {
 
   const {
     basecoats,
+    search,
+    setSearch,
     handleCreateBasecoat,
     handleDeleteBasecoat,
     handleUpdateBasecoat,
+    handleBudgets,
+    listBasecoatBy,
   } = useBasecoat();
 
   return (
@@ -31,7 +37,11 @@ export function Basecoats() {
               description="Adicione uma nova cor">
               <FormBasecoat onCreateBasecoat={handleCreateBasecoat} />
             </ModalDialog>
-            <Button size={'sm'} onClick={() => console.log('adicionar tinta')}>Orçamentos</Button>
+            <Button size={'sm'} onClick={handleBudgets}>Orçamentos</Button>
+          </div>
+          <div className="flex gap-2 items-center">
+            <Input placeholder="pesquisar ex: prata polaris" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <MagnifyingGlass size={35} color="white" className="bg-zinc-900 p-1 rounded-md" onClick={listBasecoatBy} />
           </div>
         </div>
 

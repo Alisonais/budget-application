@@ -27,6 +27,17 @@ export class BasecoatService {
 
     return res;
   };
+
+  static async searchBy(colorGroup: string, colorName: string) {
+    const res = await httpClient.get('/basecoat/listcolor', {
+      params: {
+        colorGroup,
+        colorName,
+      }
+    });
+
+    return res;
+  }
 }
 
-export namespace BasecoatService {}
+export namespace BasecoatService { }
