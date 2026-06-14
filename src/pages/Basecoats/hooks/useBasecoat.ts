@@ -33,6 +33,8 @@ export function useBasecoat() {
       const newBasecoat: objBasecoat = {
         basecoat: {
           ...dataRaw,
+          colorGroup: dataRaw.colorGroup.toLocaleUpperCase(),
+          colorName: dataRaw.colorName.toLocaleUpperCase(),
           quantity: Number(dataRaw.quantity),
         }
       };
@@ -54,6 +56,8 @@ export function useBasecoat() {
 
       const newBasecoat: Basecoat = {
         ...dataRaw,
+        colorGroup: dataRaw.colorGroup.toLocaleUpperCase(),
+        colorName: dataRaw.colorName.toLocaleUpperCase(),
         quantity: Number(dataRaw.quantity),
       };
 

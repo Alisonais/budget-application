@@ -15,7 +15,6 @@ export class BasecoatService {
   }
 
   static async updateBasecoat(basecoatId: string, data: Basecoat) {
-    console.log(data);
     const res = await httpClient.post(`/basecoat/update/${basecoatId}`, data);
 
 

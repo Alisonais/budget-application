@@ -19,9 +19,6 @@ export function InputSelect({ items, form }: InputSelectProps) {
   const [itemsCard, setItemsCard] = useState(items);
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-  }, []);
-
   function handleGetItem(item: listBudgetItem) {
     setOpen(false);
     form.reset({

@@ -12,6 +12,7 @@ import { subTotalDataSchema } from "@/components/SubTotal/schema";
 import { initialValues } from "@/utils/initialValues";
 import { safelocalStorageGetItem } from "@/utils/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence } from 'motion/react';
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import { z } from "zod";
@@ -42,35 +43,37 @@ export function AllSteps() {
 
   return (
 
-    <div className="w-full flex justify-center items-center p-4 pt-20" >
-      <FormProvider {...form}>
-        <form >
-          <Stepper
-            steps={[
-              {
-                label: 'Cliente',
-                content: <PersonalData />
-              },
-              {
-                label: 'Veiculo',
-                content: <CarData />
-              },
-              {
-                label: 'Orçamento',
-                content: <BudgetData />
-              },
-              {
-                label: 'Pagamento',
-                content: <PaymentData />
-              },
-              {
-                label: 'Revisar',
-                content: <Review />
-              },
-            ]}
-          />
-        </form>
-      </FormProvider>
-    </div>
+    <AnimatePresence mode="popLayout">
+      <div className="w-full flex justify-center items-center p-4 pt-20">
+        <FormProvider {...form}>
+          <form >
+            <Stepper
+              steps={[
+                {
+                  label: 'Cliente',
+                  content: <PersonalData />
+                },
+                {
+                  label: 'Veiculo',
+                  content: <CarData />
+                },
+                {
+                  label: 'Orçamento',
+                  content: <BudgetData />
+                },
+                {
+                  label: 'Pagamento',
+                  content: <PaymentData />
+                },
+                {
+                  label: 'Revisar',
+                  content: <Review />
+                },
+              ]}
+            />
+          </form>
+        </FormProvider>
+      </div>
+    </AnimatePresence>
   );
 }

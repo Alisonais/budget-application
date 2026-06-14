@@ -10,7 +10,7 @@ import { useFormContext } from "react-hook-form";
 
 export function CarData() {
 
-  const { nextStep } = useStepper();
+  const { nextStep} = useStepper();
   const form = useFormContext<FormData>();
 
   useEffect(()=> {
@@ -18,6 +18,7 @@ export function CarData() {
   }, []);
 
   async function handlenextStep() {
+    form.setValue('carDataStep.year', Number(form.getValues('carDataStep.year')));
     const isValid = await form.trigger('carDataStep');
     if (isValid) {
       localStorage.setItem('formValues', JSON.stringify(form.getValues()));
@@ -34,7 +35,7 @@ export function CarData() {
         <div className="grid grid-cols-2 gap-2" >
 
           {carInputTypes.map((item) => (
-            <CarDataInput id={item.id} label={item.label} type={item.type} key={item.id} />
+            <CarDataInput id={item.id} label={item.label} type={item.type} key={item.id} formatFn={item.formatFn}/>
           ))}
 
         </div>

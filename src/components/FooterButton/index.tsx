@@ -46,7 +46,7 @@ export function FooterButton({ form, pdfWidth, pdfHeight }: IProps) {
 
   function handleHome() {
     localStorage.removeItem('formValues');
-    navigate('/list-budgets');
+    navigate('/budgets');
   };
 
   async function loadingToPdf() {

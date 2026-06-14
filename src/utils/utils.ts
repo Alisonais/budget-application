@@ -67,3 +67,10 @@ export function formateDateToMounth(date: string) {
   return `${monthToUppercase} - ${year}`;
 };
 
+
+export function formatToUppercase(string: string): string {
+  const upercaseString = string.toUpperCase();
+
+  return upercaseString;
+}
+

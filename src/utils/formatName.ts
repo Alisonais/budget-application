@@ -5,3 +5,9 @@ export function formatName(string: string) {
 export function formatPlate(string: string) {
   return string.toUpperCase();
 }
+
+export function formatNumber(string: string): number {
+  const numberFormated = Number(string);
+
+  return numberFormated;
+}

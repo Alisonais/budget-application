@@ -1,9 +1,10 @@
 import { Button } from "@/components/Button";
+import { DialogClose } from "@/components/dialog";
 import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
+import { formatToUppercase } from "@/utils/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DialogClose } from "@radix-ui/react-dialog";
-import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
+import { FormProvider, UseFormReturn, useForm } from "react-hook-form";
 import { z } from "zod";
 import { basecoatInitialValues, objBasecoat } from "../typesOfBasecoats";
 
@@ -33,13 +34,17 @@ export function FormBasecoat({ basecoat, onCreateBasecoat, onUpdateBasecoat }: I
 
   return (
     <FormProvider {...basecoatForm}>
-      <div className="space-y-2">
+      <form className="space-y-2">
 
         <div className="space-y-1" >
           <Label htmlFor="group" >
             Grupo de cor:
           </Label>
-          <Input id="group" type="text" placeholder="Adicione o grupo de cor da tinta" {...basecoatForm.register('colorGroup')}
+          <Input id="group" type="text" placeholder="Adicione o grupo de cor da tinta" {...basecoatForm.register('colorGroup', {
+            onChange: (e: any) => {
+              e.target.value = formatToUppercase(e.target.value)
+            }
+          })}
           />
           {basecoatForm.formState.errors.colorGroup && (
             <small className="text-destructive" >
@@ -52,7 +57,11 @@ export function FormBasecoat({ basecoat, onCreateBasecoat, onUpdateBasecoat }: I
           <Label htmlFor="color" >
             Nome da cor:
           </Label>
-          <Input id="color" type="text" placeholder="Adicione o nome da tinta" {...basecoatForm.register('colorName')}
+          <Input id="color" type="text" placeholder="Adicione o nome da tinta" {...basecoatForm.register('colorName', {
+            onChange: (e: any) => {
+              e.target.value = formatToUppercase(e.target.value)
+            }
+          })}
           />
           {basecoatForm.formState.errors.colorName && (
             <small className="text-destructive" >
@@ -65,7 +74,11 @@ export function FormBasecoat({ basecoat, onCreateBasecoat, onUpdateBasecoat }: I
           <Label htmlFor="oem" >
             Fabricante:
           </Label>
-          <Input id="oem" type="text" placeholder="Adicione o fabricante da tinta" {...basecoatForm.register('oem')}
+          <Input id="oem" type="text" placeholder="Adicione o fabricante da tinta" {...basecoatForm.register('oem', {
+            onChange: (e: any) => {
+              e.target.value = formatToUppercase(e.target.value)
+            }
+          })}
           />
           {basecoatForm.formState.errors.oem && (
             <small className="text-destructive" >
@@ -78,7 +91,11 @@ export function FormBasecoat({ basecoat, onCreateBasecoat, onUpdateBasecoat }: I
           <Label htmlFor="code" >
             Codigo da cor:
           </Label>
-          <Input id="code" type="text" placeholder="Adicione o codigo da tinta" {...basecoatForm.register('colorCode')}
+          <Input id="code" type="text" placeholder="Adicione o codigo da tinta" {...basecoatForm.register('colorCode', {
+            onChange: (e: any) => {
+              e.target.value = formatToUppercase(e.target.value)
+            }
+          })}
           />
           {basecoatForm.formState.errors.colorCode && (
             <small className="text-destructive" >
@@ -103,16 +120,16 @@ export function FormBasecoat({ basecoat, onCreateBasecoat, onUpdateBasecoat }: I
         <div className="flex justify-end">
           {onCreateBasecoat && (
             <DialogClose>
-              <Button onClick={() => onCreateBasecoat(basecoatForm)}>Adicionar</Button>
+              <Button type="button" onClick={() => onCreateBasecoat(basecoatForm)}>Adicionar</Button>
             </DialogClose>
           )}
           {onUpdateBasecoat && (
             <DialogClose>
-              <Button onClick={() => onUpdateBasecoat(basecoatForm)}>Atualizar</Button>
+              <Button type="button" onClick={() => onUpdateBasecoat(basecoatForm)}>Atualizar</Button>
             </DialogClose>
           )}
         </div>
-      </div>
-    </FormProvider >
+      </form>
+    </FormProvider>
   )
 };

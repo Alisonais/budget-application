@@ -88,18 +88,25 @@ export function StepperFoter({ children }: { children: React.ReactNode }) {
 
   function handleHome() {
     localStorage.removeItem('formValues');
-    window.history.replaceState({}, 'formValues');
-    navigate('/list-budgets');
+    navigate('/budgets', { replace: true });
+    // window.history.replaceState({}, 'formValues');
+    // window.location.reload();
   }
   return (
-    <footer className="mt-6 flex justify-between gap-4" >
-        <ModalDialog variant="default" title="Home" description="Voltar para listagem de orçamentos">
-          <Button type="button" onClick={handleHome}>Listar orçamentos</Button>
-        </ModalDialog>
+    <motion.footer
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="mt-6 flex justify-between gap-4"
+    >
+      <ModalDialog variant="default" title="Home" description="Voltar para listagem de orçamentos">
+        <Button type="button" onClick={handleHome}>Listar orçamentos</Button>
+      </ModalDialog>
       <div className="flex justify-end gap-2">
         {children}
       </div>
-    </footer>
+    </motion.footer>
   );
 }
 

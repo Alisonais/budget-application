@@ -40,7 +40,7 @@ export function Basecoats() {
             <Button size={'sm'} onClick={handleBudgets}>Orçamentos</Button>
           </div>
           <div className="flex gap-2 items-center">
-            <Input placeholder="pesquisar ex: prata polaris" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <Input placeholder="pesquisar ex: prata polaris" value={search} onChange={(e) => setSearch(e.target.value.toUpperCase())} />
             <MagnifyingGlass size={35} color="white" className="bg-zinc-900 p-1 rounded-md" onClick={listBasecoatBy} />
           </div>
         </div>
