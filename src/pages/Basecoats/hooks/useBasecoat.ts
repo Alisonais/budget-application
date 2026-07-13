@@ -1,31 +1,35 @@
+import { useQueryListBasecoat } from "@/hooks/useQueryListBasecoat";
 import { BasecoatService } from "@/services/BasecoatService";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { formBasecoatData } from "../components/FormBasecoat";
-import { Basecoat, listBasecoatRequestType, objBasecoat } from "../typesOfBasecoats";
+import { arrayListBasecoat, Basecoat, objBasecoat } from "../typesOfBasecoats";
 
 export function useBasecoat() {
   const [basecoats, setBasecoats] = useState<Basecoat[]>([]);
   const [search, setSearch] = useState('');
 
+  const { data, refetch } = useQueryListBasecoat({ state: setBasecoats });
+
   const navigate = useNavigate();
 
-  const loadBasecoats = useCallback(async () => {
-    try {
-      const data: listBasecoatRequestType = await BasecoatService.getBasecoats();
-      const dataBasecoats = data.data.basecoats;
-      setBasecoats(dataBasecoats);
-      toast.success('tintas listadas com sucesso');
-    } catch (err) {
-      toast.error('Algo deu errado ao listar as tintas');
-    }
-  }, []);
+  // const loadBasecoats = useCallback(async () => {
+  //   try {
+  //     const data: arrayListBasecoat = await BasecoatService.getBasecoats();
+  //     const dataBasecoats = data.basecoats;
+  //     setBasecoats(dataBasecoats);
+  //     toast.success('tintas listadas com sucesso');
+  //   } catch (err) {
+  //     toast.error('Algo deu errado ao listar as tintas');
+  //   }
+  // }, []);
 
   useEffect(() => {
-    loadBasecoats()
-  }, []);
+    // loadBasecoats()
+    setBasecoats(data?.basecoats ?? [])
+  }, [data]);
 
   async function handleCreateBasecoat({ getValues }: UseFormReturn<formBasecoatData>) {
     try {
@@ -41,7 +45,7 @@ export function useBasecoat() {
 
       await BasecoatService.createBasecoat(newBasecoat);
       toast.success('tinta adicionada com sucesso');
-      loadBasecoats();
+      refetch();
     } catch {
       toast.error('Algo deu errado ao adicionar a tinta');
     }
@@ -63,7 +67,7 @@ export function useBasecoat() {
 
       await BasecoatService.updateBasecoat(dataRaw.id, newBasecoat);
       toast.success('tinta atualizada com sucesso');
-      loadBasecoats();
+      refetch();
     } catch {
       toast.error('Algo deu errado ao atualizar a tinta');
     }
@@ -73,7 +77,7 @@ export function useBasecoat() {
     try {
       await BasecoatService.deleteBasecoat(basecoatId);
       toast.success('tinta deletada com sucesso');
-      loadBasecoats();
+      refetch();
     } catch {
       toast.error('Algo deu errado ao deletar a tinta');
     }
@@ -85,16 +89,16 @@ export function useBasecoat() {
 
   async function listBasecoatBy() {
     if (!search) {
-      return loadBasecoats();
+      return refetch();
     }
 
     const colorGroup = search.split(' ')[0];
     const colorName = search.split(' ')[1] ?? '';
 
     try {
-      const data: listBasecoatRequestType = await BasecoatService.searchBy(colorGroup, colorName);
+      const data: arrayListBasecoat = await BasecoatService.searchBy(colorGroup, colorName);
       toast.success('tintas listadas com sucesso');
-      setBasecoats(data.data.basecoats);
+      setBasecoats(data.basecoats);
     } catch {
       toast.error('Algo deu errado ao listar as tintas')
     }
