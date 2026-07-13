@@ -4,38 +4,38 @@ import { httpClient } from "./httpClient";
 export class BasecoatService {
 
   static async getBasecoats() {
-    const res = await httpClient.get('/basecoats');
-    return res;
+    const { data } = await httpClient.get('/basecoats');
+    return data;
   }
 
-  static async createBasecoat(data: objBasecoat) {
-    const res = await httpClient.post('/basecoat/create', data);
+  static async createBasecoat(dataBasecoat: objBasecoat) {
+    const { data } = await httpClient.post('/basecoat/create', dataBasecoat);
 
-    return res;
+    return data;
   }
 
-  static async updateBasecoat(basecoatId: string, data: Basecoat) {
-    const res = await httpClient.post(`/basecoat/update/${basecoatId}`, data);
+  static async updateBasecoat(basecoatId: string, dataBasecoat: Basecoat) {
+    const { data } = await httpClient.post(`/basecoat/update/${basecoatId}`, dataBasecoat);
 
 
-    return res;
+    return data;
   }
 
   static async deleteBasecoat(basecoatId: string) {
-    const res = await httpClient.delete(`/basecoat/${basecoatId}`);
+    const { data } = await httpClient.delete(`/basecoat/${basecoatId}`);
 
-    return res;
+    return data;
   };
 
   static async searchBy(colorGroup: string, colorName: string) {
-    const res = await httpClient.get('/basecoat/listcolor', {
+    const { data } = await httpClient.get('/basecoat/listcolor', {
       params: {
         colorGroup,
         colorName,
       }
     });
 
-    return res;
+    return data;
   }
 }
 
