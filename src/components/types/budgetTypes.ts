@@ -80,6 +80,10 @@ export interface listBudgetItem {
   date: string,
 }
 
+export type arrayListBudgets = {
+  budgets: listBudgetItem[]
+}
+
 export type budgetObject = {
   budget: {
     paymentDataStep: PaymentDataStep;

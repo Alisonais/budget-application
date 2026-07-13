@@ -1,8 +1,3 @@
-export type listBasecoatRequestType = {
-  data: {
-    basecoats: []
-  }
-}
 
 export type Basecoat = {
   id?: string;
@@ -14,7 +9,11 @@ export type Basecoat = {
 }
 
 export type objBasecoat = {
-  basecoat?: Basecoat
+  basecoat?: Basecoat;
+}
+
+export type arrayListBasecoat = {
+  basecoats: Basecoat[];
 }
 
 export function basecoatInitialValues({ basecoat }: objBasecoat ): Basecoat {
