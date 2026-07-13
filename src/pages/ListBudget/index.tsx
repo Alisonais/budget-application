@@ -12,6 +12,8 @@ export function ListBudget() {
 
   const {
     items,
+    isLoading,
+    isPending,
     serchValue,
     setSerchValue,
     searchByName,
@@ -50,7 +52,7 @@ export function ListBudget() {
             </div>
           </div>
           <div className="flex justify-between gap-2">
-            <Button size={'sm'} onClick={handleAllBudgets}>{items.length}</Button>
+            <Button size={'sm'} onClick={handleAllBudgets}>{items?.length}</Button>
             <Button size={'sm'} onClick={handleBudgetsPending}>Pendente</Button>
             <Button size={'sm'} onClick={handleBudgetsAproved}>Aprovado</Button>
             <Button size={'sm'} onClick={handleDasboard}><ChartLineUp size={16} /></Button>
@@ -61,14 +63,20 @@ export function ListBudget() {
 
         <div
           className="flex flex-col gap-4" >
-          {items.length === 0 && (
-            <div className="h-[300px] flex gap-4 items-center justify-center">
+
+          {isLoading && (
+            <div className="h-[300px] flex gap-4 items-center justify-center relative">
               <SpinnerLoading className="size-10" />
               <h1 className="text-2xl text-center font-bold tracking-[2px] animate-pulse">Carregando...</h1>
             </div>
           )}
+          {!items && (
+            <div className="h-[300px] flex gap-4 items-center justify-center">
+              <h1 className="text-xl text-center font-bold tracking-[2px]">Não Há orçamentos para exibir 😕</h1>
+            </div>
+          )}
           {
-            items && items.map((item) => (
+            items && items?.map((item) => (
               <motion.div
                 initial={{
                   opacity: 0,

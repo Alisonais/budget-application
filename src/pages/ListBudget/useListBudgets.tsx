@@ -1,5 +1,5 @@
 import { listBudgetItem } from "@/components/types/budgetTypes";
-import { useBudgetsFilteredByPhoneOrderByAZ } from "@/hooks/useBudgetsFilteredByPhoneOrderByAZ";
+import { useQueryListBudgets } from "@/hooks/useQueryListBudgets";
 import { useToast } from "@/hooks/useToast";
 import { BudgetService } from "@/services/BudgetService";
 import { safelocalStorageGetItem } from "@/utils/utils";
@@ -15,18 +15,16 @@ export function useListBudgets() {
   const [searchByName, setSearchByName] = useState(false);
   const [searchByCar, setSearchByCar] = useState(false);
 
-  const loadBudgets = useCallback(async () => {
+  const { data, isFetching: isLoading, isPending } = useQueryListBudgets({state:setItems})
+
+  const loadBudgets = useCallback( () => {
     try {
-      const data = await BudgetService.getBudget();
-      const dataBudgets: listBudgetItem[] = data.budgets;
-      localStorage.setItem('AllBudgets', JSON.stringify(dataBudgets));
-      const budgetsFiltered = useBudgetsFilteredByPhoneOrderByAZ(dataBudgets);
-      localStorage.setItem('budgets', JSON.stringify(budgetsFiltered));
-      setItems(dataBudgets);
+      setItems(data?.budgets || []);
     } catch (error) {
       toast.error('Algo deu errado ao listar Orçamentos')
     }
-  }, [])
+  }, [data]);
+
 
   useEffect(() => {
     loadBudgets();
@@ -85,6 +83,8 @@ export function useListBudgets() {
 
   return {
     items,
+    isLoading,
+    isPending,
     serchValue,
     setSerchValue,
     searchByName,
