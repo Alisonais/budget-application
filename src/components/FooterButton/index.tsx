@@ -1,3 +1,4 @@
+import { useQueryListBudgets } from "@/hooks/useQueryListBudgets";
 import { useToast } from "@/hooks/useToast";
 import { FormData } from "@/pages/AllSteps";
 import { BudgetService } from "@/services/BudgetService";
@@ -19,6 +20,8 @@ export function FooterButton({ form, pdfWidth, pdfHeight }: IProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  const { refetch } = useQueryListBudgets({state:undefined});
+
   function handleSaveBudget() {
     const budget = form.getValues();
     const novoBudget = { budget };
@@ -26,6 +29,7 @@ export function FooterButton({ form, pdfWidth, pdfHeight }: IProps) {
       const res = await BudgetService.createBudget(novoBudget);
       const id = res.data.id;
       form.setValue('id', id);
+      refetch();
       return res;
     };
 
