@@ -2,7 +2,8 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { ModalDialog } from "@/components/ModalDialog";
 import { SpinnerLoading } from "@/components/Spinner";
-import { MagnifyingGlass } from "@phosphor-icons/react";
+import { cn } from "@/utils/utils";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
 import { BasecoatCard } from "./components/BasecoatCard";
 import { FormBasecoat } from "./components/FormBasecoat";
@@ -19,6 +20,9 @@ export function Basecoats() {
     handleUpdateBasecoat,
     handleBudgets,
     listBasecoatBy,
+    handleRefetchBasecoat,
+    isFetching,
+    isFetchingSearchBy,
   } = useBasecoat();
 
   return (
@@ -39,14 +43,25 @@ export function Basecoats() {
             </ModalDialog>
             <Button size={'sm'} onClick={handleBudgets}>Orçamentos</Button>
           </div>
-          <div className="flex gap-2 items-center">
+          <div className={cn(
+            isFetchingSearchBy
+            ? "flex gap-2 items-center cursor-progress"
+            : "flex gap-2 items-center"
+          )}>
             <Input placeholder="pesquisar ex: prata polaris" value={search} onChange={(e) => setSearch(e.target.value.toUpperCase())} />
-            <MagnifyingGlass size={35} color="white" className="bg-zinc-900 p-1 rounded-md" onClick={listBasecoatBy} />
+            <Button disabled={isFetchingSearchBy} onClick={listBasecoatBy} size={'sm'}> <MagnifyingGlassIcon size={20} color="white" /> </Button>
+          </div>
+          <div className="flex justify-center gap-2">
+            <Button onClick={handleRefetchBasecoat} size={'sm'}> {basecoats.length ?? 0} </Button>
           </div>
         </div>
 
         <div
-          className="flex flex-col gap-4" >
+          className={cn(
+            isFetching
+              ? "flex flex-col gap-4 animate-pulse"
+              : "flex flex-col gap-4"
+          )} >
           {basecoats.length === 0 && (
             <div className="h-[300px] flex gap-4 basecoats-center justify-center">
               <SpinnerLoading className="size-10" />

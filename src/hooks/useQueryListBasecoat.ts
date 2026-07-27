@@ -8,9 +8,9 @@ interface IuseQueryListBasecoat {
   state: Dispatch<SetStateAction<Basecoat[]>>
 }
 
-export function useQueryListBasecoat({state}: IuseQueryListBasecoat) {
+export function useQueryListBasecoat({ state }: IuseQueryListBasecoat) {
   return useQuery({
-    queryKey:['listBasecoat'],
+    queryKey: ['listBasecoat'],
     staleTime: Infinity,
     queryFn: async (): Promise<arrayListBasecoat> => {
       const res: arrayListBasecoat = await BasecoatService.getBasecoats();
@@ -20,3 +20,5 @@ export function useQueryListBasecoat({state}: IuseQueryListBasecoat) {
     },
   })
 }
+
+

@@ -15,7 +15,9 @@ export function useListBudgets() {
   const [searchByName, setSearchByName] = useState(false);
   const [searchByCar, setSearchByCar] = useState(false);
 
-  const { data, isFetching: isLoading, isPending } = useQueryListBudgets({state:setItems})
+  const { data, isLoading, isFetching, refetch } = useQueryListBudgets({state:setItems});
+
+  console.log({isLoading, isFetching})
 
   const loadBudgets = useCallback( () => {
     try {
@@ -77,6 +79,7 @@ export function useListBudgets() {
   };
 
   function handleAllBudgets() {
+    refetch()
     const budgets: listBudgetItem[] = safelocalStorageGetItem('AllBudgets') || [];
     setItems(budgets);
   };
@@ -84,7 +87,7 @@ export function useListBudgets() {
   return {
     items,
     isLoading,
-    isPending,
+    isFetching,
     serchValue,
     setSerchValue,
     searchByName,

@@ -1,17 +1,20 @@
 import { useQueryListBasecoat } from "@/hooks/useQueryListBasecoat";
+import { useQuerySearchBasecoatBy } from "@/hooks/useQuerySearchBasecoatBy";
 import { BasecoatService } from "@/services/BasecoatService";
 import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { formBasecoatData } from "../components/FormBasecoat";
-import { arrayListBasecoat, Basecoat, objBasecoat } from "../typesOfBasecoats";
+import { Basecoat, objBasecoat } from "../typesOfBasecoats";
 
 export function useBasecoat() {
   const [basecoats, setBasecoats] = useState<Basecoat[]>([]);
+  const [searchBy, setSearchBy] = useState({ colorGroup: '', colorName: '' });
   const [search, setSearch] = useState('');
 
-  const { data, refetch } = useQueryListBasecoat({ state: setBasecoats });
+  const { data, isFetching, refetch } = useQueryListBasecoat({ state: setBasecoats });
+  const { refetch: fetch, isFetching: isFetchingSearchBy } = useQuerySearchBasecoatBy({ state: setBasecoats, colorGroup: searchBy.colorGroup, colorName: searchBy.colorName });
 
   const navigate = useNavigate();
 
@@ -87,7 +90,7 @@ export function useBasecoat() {
     navigate('budgets');
   };
 
-  async function listBasecoatBy() {
+function listBasecoatBy() {
     if (!search) {
       return refetch();
     }
@@ -95,16 +98,20 @@ export function useBasecoat() {
     const colorGroup = search.split(' ')[0];
     const colorName = search.split(' ')[1] ?? '';
 
-    try {
-      const data: arrayListBasecoat = await BasecoatService.searchBy(colorGroup, colorName);
-      toast.success('tintas listadas com sucesso');
-      setBasecoats(data.basecoats);
-    } catch {
-      toast.error('Algo deu errado ao listar as tintas')
+    console.log({colorGroup, colorName});
+    setSearchBy({ colorGroup, colorName });
+
+  }
+
+  useEffect(()=>{
+    if(searchBy.colorGroup.length > 1) {
+      fetch();
     }
+  },[searchBy]);
 
-
-
+  function handleRefetchBasecoat() {
+    setSearch('');
+    refetch();
   }
 
   return {
@@ -116,5 +123,8 @@ export function useBasecoat() {
     handleDeleteBasecoat,
     handleBudgets,
     listBasecoatBy,
+    handleRefetchBasecoat,
+    isFetching,
+    isFetchingSearchBy,
   }
 }

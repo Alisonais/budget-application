@@ -5,10 +5,10 @@ import { Dispatch, SetStateAction } from "react";
 import { useBudgetsFilteredByPhoneOrderByAZ } from "./useBudgetsFilteredByPhoneOrderByAZ";
 
 interface IuseQueryListBudgets {
-  state: Dispatch<SetStateAction<listBudgetItem[]>>
+  state?: Dispatch<SetStateAction<listBudgetItem[]>>
 }
 
-export function useQueryListBudgets({state}: IuseQueryListBudgets) {
+export function useQueryListBudgets({ state }: IuseQueryListBudgets) {
   return useQuery({
     queryKey: ['listBudgets'],
     queryFn: async (): Promise<arrayListBudgets> => {
@@ -16,7 +16,9 @@ export function useQueryListBudgets({state}: IuseQueryListBudgets) {
       localStorage.setItem('AllBudgets', JSON.stringify(res.budgets));
       const budgetsFiltered = useBudgetsFilteredByPhoneOrderByAZ(res.budgets);
       localStorage.setItem('budgets', JSON.stringify(budgetsFiltered));
-      state(res.budgets);
+      if (state) {
+        state(res.budgets)
+      };
       return res;
     },
   });
