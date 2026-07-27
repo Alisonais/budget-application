@@ -2,7 +2,7 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { FormData } from "@/pages/AllSteps";
-import { Basecoat, listBasecoatRequestType } from "@/pages/Basecoats/typesOfBasecoats";
+import { arrayListBasecoat, Basecoat } from "@/pages/Basecoats/typesOfBasecoats";
 import { BasecoatService } from "@/services/BasecoatService";
 import { formatToUppercase } from "@/utils/utils";
 import { Search } from "lucide-react";
@@ -30,9 +30,9 @@ export function InputColorSelect({ form }: InputSelectProps) {
     const stringColorGroup = color.split(' ')[0].toUpperCase();
     const stringColorName = color.split(' ')[1]?.toUpperCase() ?? '';
 
-    const res: listBasecoatRequestType = await BasecoatService.searchBy(stringColorGroup, stringColorName ?? '');
-    console.log(res.data.basecoats);
-    setItemsCard(res.data.basecoats);
+    const data: arrayListBasecoat = await BasecoatService.searchBy(stringColorGroup, stringColorName ?? '');
+    console.log(data.basecoats);
+    setItemsCard(data.basecoats);
 
     setOpen(true);
   };
