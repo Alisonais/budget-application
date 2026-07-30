@@ -29,6 +29,7 @@ export function FooterButton({ form, pdfWidth, pdfHeight }: IProps) {
       const res = await BudgetService.createBudget(novoBudget);
       const id = res.data.id;
       form.setValue('id', id);
+      localStorage.setItem('formValues', JSON.stringify(form.getValues()));
       refetch();
       return res;
     };
@@ -44,6 +45,7 @@ export function FooterButton({ form, pdfWidth, pdfHeight }: IProps) {
 
     const promise = async () => await BudgetService.updateBudget(bugetId, data);
     setModalOpen(true);
+    refetch();
 
     useToast(promise, 'Orçamento atualizado com sucesso 😎.', 'Erro ao atualizar orçamento 😒');
   }
