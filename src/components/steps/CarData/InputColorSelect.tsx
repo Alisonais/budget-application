@@ -1,9 +1,10 @@
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
+import { Loader } from "@/components/Loader";
+import { useQuerySearchBasecoatBy } from "@/hooks/useQuerySearchBasecoatBy";
 import { FormData } from "@/pages/AllSteps";
-import { arrayListBasecoat, Basecoat } from "@/pages/Basecoats/typesOfBasecoats";
-import { BasecoatService } from "@/services/BasecoatService";
+import { Basecoat } from "@/pages/Basecoats/typesOfBasecoats";
 import { formatToUppercase } from "@/utils/utils";
 import { Search } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -19,38 +20,18 @@ export function InputColorSelect({ form }: InputSelectProps) {
 
   const [open, setOpen] = useState(false);
   const [itemsCard, setItemsCard] = useState<Basecoat[]>([]);
+  const [searchBy, setSearchBy] = useState({ colorGroup: '', colorName: '' });
   const ref = useRef<HTMLDivElement>(null);
 
-  async function handleGetItem(color: string) {
+  const { refetch, isFetching } = useQuerySearchBasecoatBy({ state: setItemsCard, colorGroup: searchBy.colorGroup, colorName: searchBy.colorName });
 
-    if (color.length < 1) {
-      return;
-    }
 
-    const stringColorGroup = color.split(' ')[0].toUpperCase();
-    const stringColorName = color.split(' ')[1]?.toUpperCase() ?? '';
-
-    const data: arrayListBasecoat = await BasecoatService.searchBy(stringColorGroup, stringColorName ?? '');
-    console.log(data.basecoats);
-    setItemsCard(data.basecoats);
-
-    setOpen(true);
-  };
 
   function setItemValue(colorGroup: string, ColorName: string, oem: string) {
     form.setValue('carDataStep.color', `${colorGroup} ${ColorName}`);
 
     form.setValue('carDataStep.brand', oem);
-  }
-
-  // function filterItemSelect(value: string) {
-  //   const itemsfiltered = items.filter((item) => {
-  //     const nameUpercase = item.client.name.toUpperCase();
-  //     const valueUpercase = value.toUpperCase();
-  //     return nameUpercase.includes(valueUpercase);
-  //   })
-  //   setItemsCard(itemsfiltered);
-  // }
+  };
 
   useEffect(() => {
     function handleClickFora(event: MouseEvent) {
@@ -64,6 +45,23 @@ export function InputColorSelect({ form }: InputSelectProps) {
     };
   }, [ref]);
 
+  function listBasecoatBy(color: string) {
+    if (!color) {
+      return;
+    }
+
+    const colorGroup = color.split(' ')[0];
+    const colorName = color.split(' ')[1] ?? '';
+    setSearchBy({ colorGroup, colorName });
+  }
+
+  useEffect(() => {
+    if (searchBy.colorGroup.length > 1) {
+      refetch();
+      setOpen(true);
+    }
+  }, [searchBy]);
+
   return (
     <div ref={ref}>
       <div className="flex gap-2">
@@ -72,8 +70,11 @@ export function InputColorSelect({ form }: InputSelectProps) {
             form.setValue('carDataStep.color', formatToUppercase(e.target.value))
           )))
         })} />
-        <Button variant={'outline'} type="button" onClick={() => (handleGetItem(form.getValues('carDataStep.color')))}>
-          <Search />
+        <Button variant={'outline'} type="button" onClick={() => (listBasecoatBy(form.getValues('carDataStep.color')))}>
+          {isFetching
+            ? <Loader color='text-black'/>
+            : <Search />
+          }
         </Button>
       </div>
       <AnimatePresence initial={false}>

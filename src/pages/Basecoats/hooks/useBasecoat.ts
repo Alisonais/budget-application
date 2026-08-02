@@ -97,10 +97,7 @@ function listBasecoatBy() {
 
     const colorGroup = search.split(' ')[0];
     const colorName = search.split(' ')[1] ?? '';
-
-    console.log({colorGroup, colorName});
     setSearchBy({ colorGroup, colorName });
-
   }
 
   useEffect(()=>{
