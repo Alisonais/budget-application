@@ -39,11 +39,6 @@ export function BudgetData() {
   useEffect(()=> {
     const date = new Date(form.getValues('createdAt'));
 
-
-    console.log(date instanceof Date);
-    console.log(date);
-
-
     if (date instanceof Date) {
       const dateToInput = formatDate({dateInUnix: date.getTime()});
       form.setValue('createdAt', dateToInput as any);

@@ -17,8 +17,6 @@ export function useListBudgets() {
 
   const { data, isLoading, isFetching, refetch } = useQueryListBudgets({state:setItems});
 
-  console.log({isLoading, isFetching})
-
   const loadBudgets = useCallback( () => {
     try {
       setItems(data?.budgets || []);

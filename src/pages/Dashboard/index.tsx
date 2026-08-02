@@ -25,17 +25,12 @@ export function Dashboard() {
     pricePerPiece
   } = useDasboard()
 
-  function handleMuoseEnter() {
-    console.log('mouse hover');
-  };
-
-
   return (
     <div className="max-w-[900px] m-[0_auto] flex justify-center items-center flex-col gap-4 p-4 pt-20">
       <h1 className="text-4xl text-center font-bold tracking-[2px]">Dashboard</h1>
       <div className="flex gap-2" >
       <Button size={'sm'} onClick={handleListBasecoats}>Tintas</Button>
-        <Button onMouseEnter={handleMuoseEnter} size={'sm'} onClick={handleListBudgets}>Orçamentos</Button>
+        <Button size={'sm'} onClick={handleListBudgets}>Orçamentos</Button>
       </div>
 
       {Object.entries(groupByMonth).map(([chave, items]) => (

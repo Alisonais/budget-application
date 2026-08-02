@@ -57,8 +57,6 @@ export function useDasboard() {
     monthGroup(budgets);
   }, []);
 
-  console.log(groupByMonth)
-
   function titleLocaleString(chave: string) {
     const [year, month] = chave.split('-');
     const dateToShow = new Date(Number(year), Number(month) - 1);
