@@ -1,3 +1,4 @@
+import { useMutationSaveBasecoat } from "@/hooks/useMutationSaveBasecoat";
 import { useQueryListBasecoat } from "@/hooks/useQueryListBasecoat";
 import { useQuerySearchBasecoatBy } from "@/hooks/useQuerySearchBasecoatBy";
 import { BasecoatService } from "@/services/BasecoatService";
@@ -18,6 +19,8 @@ export function useBasecoat() {
 
   const navigate = useNavigate();
 
+  const { mutateAsync, isPending } = useMutationSaveBasecoat();
+
   // const loadBasecoats = useCallback(async () => {
   //   try {
   //     const data: arrayListBasecoat = await BasecoatService.getBasecoats();
@@ -30,67 +33,52 @@ export function useBasecoat() {
   // }, []);
 
   useEffect(() => {
-    // loadBasecoats()
     setBasecoats(data?.basecoats ?? [])
   }, [data]);
 
   async function handleCreateBasecoat({ getValues }: UseFormReturn<formBasecoatData>) {
-    try {
-      const dataRaw = getValues();
-      const newBasecoat: objBasecoat = {
-        basecoat: {
-          ...dataRaw,
-          colorGroup: dataRaw.colorGroup.toLocaleUpperCase(),
-          colorName: dataRaw.colorName.toLocaleUpperCase(),
-          quantity: Number(dataRaw.quantity),
-        }
-      };
-
-      await BasecoatService.createBasecoat(newBasecoat);
-      toast.success('tinta adicionada com sucesso');
-      refetch();
-    } catch {
-      toast.error('Algo deu errado ao adicionar a tinta');
-    }
-  }
-
-  async function handleUpdateBasecoat({ getValues }: UseFormReturn<formBasecoatData>) {
-    try {
-      const dataRaw = getValues();
-      if (!dataRaw.id) {
-        return toast.error('Não foi possivel atualizar a tinta');
-      };
-
-      const newBasecoat: Basecoat = {
+    // try {
+    const dataRaw = getValues();
+    const newBasecoat: objBasecoat = {
+      basecoat: {
         ...dataRaw,
         colorGroup: dataRaw.colorGroup.toLocaleUpperCase(),
         colorName: dataRaw.colorName.toLocaleUpperCase(),
         quantity: Number(dataRaw.quantity),
-      };
+      }
+    };
 
-      await BasecoatService.updateBasecoat(dataRaw.id, newBasecoat);
-      toast.success('tinta atualizada com sucesso');
-      refetch();
-    } catch {
-      toast.error('Algo deu errado ao atualizar a tinta');
-    }
-  }
+    await mutateAsync({ basecoatObj: newBasecoat });
+    await refetch();
+  };
+
+  async function handleUpdateBasecoat({ getValues }: UseFormReturn<formBasecoatData>) {
+    const dataRaw = getValues();
+    if (!dataRaw.id) {
+      return toast.error('Não foi possivel atualizar a tinta');
+    };
+
+    const newBasecoat: Basecoat = {
+      ...dataRaw,
+      colorGroup: dataRaw.colorGroup.toLocaleUpperCase(),
+      colorName: dataRaw.colorName.toLocaleUpperCase(),
+      quantity: Number(dataRaw.quantity),
+    };
+
+    await BasecoatService.updateBasecoat(dataRaw.id, newBasecoat);
+    await refetch();
+  };
 
   async function handleDeleteBasecoat(basecoatId: string) {
-    try {
-      await BasecoatService.deleteBasecoat(basecoatId);
-      toast.success('tinta deletada com sucesso');
-      refetch();
-    } catch {
-      toast.error('Algo deu errado ao deletar a tinta');
-    }
-  }
+    await BasecoatService.deleteBasecoat(basecoatId);
+    await refetch();
+  };
 
   function handleBudgets() {
     navigate('budgets');
   };
 
-function listBasecoatBy() {
+  function listBasecoatBy() {
     if (!search) {
       return refetch();
     }
@@ -100,11 +88,11 @@ function listBasecoatBy() {
     setSearchBy({ colorGroup, colorName });
   }
 
-  useEffect(()=>{
-    if(searchBy.colorGroup.length > 1) {
+  useEffect(() => {
+    if (searchBy.colorGroup.length > 1) {
       fetch();
     }
-  },[searchBy]);
+  }, [searchBy]);
 
   function handleRefetchBasecoat() {
     setSearch('');
