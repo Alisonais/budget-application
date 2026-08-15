@@ -1,7 +1,13 @@
 import { AxiosResponse } from "axios";
 import { toast } from "sonner";
 
-export function useToast(promise: () => Promise<AxiosResponse<any, any> | (() => Promise<any>) | undefined >, msg: string, errorMsg?: string) {
+interface IUseToast {
+  promise: Promise<any> | (() => Promise<AxiosResponse<any, any> | (() => Promise<any>) | undefined>) ;
+  msg: string;
+  errorMsg?: string
+}
+
+export function useToast({ promise, msg, errorMsg }: IUseToast) {
   return (
     toast.promise(promise, {
       loading: 'Loading...',

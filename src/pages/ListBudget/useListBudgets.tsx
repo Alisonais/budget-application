@@ -43,7 +43,7 @@ export function useListBudgets() {
     setItems(prev => prev.filter((item) => item.id !== budgetId));
     const promise = async () => await BudgetService.deleteBudget(budgetId);
 
-    useToast(promise, 'Orçamento deletado com sucesso  😎',);
+    useToast({promise, msg: 'Orçamento deletado com sucesso  😎', errorMsg: 'Erro ao deletar o orçamento 😔'});
   }
 
   async function listBudgetBy() {
