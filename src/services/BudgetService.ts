@@ -1,4 +1,5 @@
 import { budgetObject } from "@/components/types/budgetTypes";
+import { useToast } from "@/hooks/useToast";
 import { FormData } from "@/pages/AllSteps";
 import { AxiosResponse } from "axios";
 import { toast } from "sonner";
@@ -16,20 +17,45 @@ interface ICreateBudgetResponse {
 
 export class BudgetService {
 
-  static async createBudget(data: budgetObject) {
-    const res = await httpClient.post<any, AxiosResponse<ICreateBudgetResponse>>('/budget/create', data);
+  static async handlerRequest<T>(
+    requestFn: () => Promise<{ data: T }>,
+    messages: { success: string, error: string }
+  ): Promise<T> {
+    async function fetchData() {
+      const { data } = await requestFn();
+      return data;
+    };
+
+    const res = fetchData();
+
+    useToast({ promise: res, msg: messages.success, errorMsg: messages.error });
+
     return res;
   }
 
+  static async createBudget(data: budgetObject) {
+    return this.handlerRequest(
+      () => httpClient.post<any, AxiosResponse<ICreateBudgetResponse>>('/budget/create', data),
+      { success: 'Orçamento salvo com sucesso 😎.', error: 'Erro ao salvar orçamento 😒' }
+    )
+  }
+
   static async getBudget() {
-    const { data } = await httpClient.get('/budgets');
-    return data
+    try {
+      const { data } = await httpClient.get('/budgets');
+      return data
+    } catch {
+      toast.error('Erro ao listar os orçamentos 🙁');
+    }
   }
 
   static async getBudgetById(budgetId: string) {
-    const { data } = await httpClient.get(`/budget/${budgetId}`);
-
-    return data
+    try {
+      const { data } = await httpClient.get(`/budget/${budgetId}`);
+      return data
+    } catch {
+      toast('Erro ao buscar o orçamento 🙁');
+    }
   }
 
   static async updateBudget(budgetId: string, data: FormData) {
