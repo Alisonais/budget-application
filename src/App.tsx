@@ -11,9 +11,9 @@ export function App() {
   const queryclient = new QueryClient({
     defaultOptions:{
       queries: {
-        staleTime: 5 * 60 * 1000, // 5minutos
+        staleTime: 10 * 60 * 1000, // 10 minutos
         refetchOnWindowFocus: false,
-        gcTime: 10 * 60 * 1000,  // 10 minutos
+        gcTime: 11 * 60 * 1000,  // 11 minutos
       }
     }
   });
