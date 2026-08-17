@@ -19,24 +19,21 @@ export class BudgetService {
 
   static async handlerRequest<T>(
     requestFn: () => Promise<{ data: T }>,
-    messages: { success: string, error: string }
+    messages: { success: string, error?: string }
   ): Promise<T> {
     async function fetchData() {
       const { data } = await requestFn();
       return data;
-    };
-
+    }
     const res = fetchData();
-
-    useToast({ promise: res, msg: messages.success, errorMsg: messages.error });
-
+    useToast({ promise: Promise.resolve(res), msg: messages.success, errorMsg: messages.error });
     return res;
   }
 
   static async createBudget(data: budgetObject) {
     return this.handlerRequest(
       () => httpClient.post<any, AxiosResponse<ICreateBudgetResponse>>('/budget/create', data),
-      { success: 'Orçamento salvo com sucesso 😎.', error: 'Erro ao salvar orçamento 😒' }
+      { success: 'Orçamento salvo com sucesso 😎.', error: 'Erro ao salvar orçamento 😔' }
     )
   }
 
@@ -59,9 +56,10 @@ export class BudgetService {
   }
 
   static async updateBudget(budgetId: string, data: FormData) {
-
-    const response = await httpClient.post(`/budget/update/${budgetId}`, data);
-    return response;
+    return this.handlerRequest(
+      () => httpClient.post(`/budget/update/${budgetId}`, data),
+      { success: 'Orçamento Atualizado com sucesso 😎', error: 'Erro ao atualizar o orçcamento 😔' }
+    )
   }
 
   static async deleteBudget(bugetId: string) {

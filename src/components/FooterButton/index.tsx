@@ -20,21 +20,16 @@ export function FooterButton({ form, pdfWidth, pdfHeight }: IProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { refetch } = useQueryListBudgets({state:undefined});
+  const { refetch } = useQueryListBudgets({ state: undefined });
 
-  function handleSaveBudget() {
+  async function handleSaveBudget() {
     const budget = form.getValues();
     const novoBudget = { budget };
-    const promise = async () => {
       const res = await BudgetService.createBudget(novoBudget);
-      const id = res.data.id;
+      const id = res.id;
       form.setValue('id', id);
       localStorage.setItem('formValues', JSON.stringify(form.getValues()));
-      refetch();
-      return res;
-    };
-
-    useToast(promise, 'Orçamento salvo com sucesso 😎.', 'Erro ao salvar orçamento 😒');
+      await refetch();
   }
 
   function handleUpdateBudget() {
@@ -43,11 +38,11 @@ export function FooterButton({ form, pdfWidth, pdfHeight }: IProps) {
     !form.getValues('createdAt') && form.setValue('createdAt', new Date());
     const data = form.getValues();
 
-    const promise = async () => await BudgetService.updateBudget(bugetId, data);
+    const promise = async (): Promise<any> => await BudgetService.updateBudget(bugetId, data);
     setModalOpen(true);
     refetch();
 
-    useToast(promise, 'Orçamento atualizado com sucesso 😎.', 'Erro ao atualizar orçamento 😒');
+    useToast({ promise, msg: 'Orçamento atualizado com sucesso 😎.', errorMsg: 'Erro ao atualizar orçamento 😒' });
   }
 
   function handleHome() {
@@ -57,7 +52,7 @@ export function FooterButton({ form, pdfWidth, pdfHeight }: IProps) {
 
   async function loadingToPdf() {
     const promise = async () => await handleSendMsgPdf(form, pdfWidth, pdfHeight);
-    useToast(promise, 'PDF criado com sucesso 😎.', 'Erro ao crair PDF 😒');
+    useToast({ promise, msg: 'PDF criado com sucesso 😎.', errorMsg: 'Erro ao crair PDF 😒' });
   }
 
   const statusValue = form.watch('status');
